@@ -3,6 +3,9 @@ const languagesConfig = require('../configs/languages.config')
 
 const languageController = {
     get: (req, res) => {
+        //const platform = req.query.platform;
+        //const version = req.query.version;
+
         languageUtil.getDownloadUrls(
             languagesConfig.ruby.releasesUrl, 
             languagesConfig.ruby.downloadUrl
