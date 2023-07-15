@@ -1,8 +1,13 @@
 const languageUtil = require('../utils/language.util')
+const languagesConfig = require('../configs/languages.config')
 
 const languagesController = {
     get: (req, res) => {
-        languageUtil.getLatestDownloadUrl('https://www.ruby-lang.org/en/downloads/releases/', 'https://cache.ruby-lang.org/pub/ruby/', /\/pub\/ruby\/([\d.]+)/)
+        languageUtil.getLatestDownloadUrl(
+            languagesConfig.ruby.releasesUrl, 
+            languagesConfig.ruby.downloadUrl, 
+            languagesConfig.ruby.versionRegex
+        )
         .then(latestReleaseLink => {
             res.send(latestReleaseLink)
         })

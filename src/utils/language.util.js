@@ -12,6 +12,8 @@ function getDownloadUrls(url, selector) {
         $(`a[href^="${selector}"]`).each((index, element) => {
           releases.push($(element).attr('href'))
         })
+        
+        //sprawdzanie platformy i wersji
 
         resolve(releases)
       })
@@ -34,6 +36,8 @@ function getLatestDownloadUrl(url, selector, versionRegex) {
           releases.push($(element).attr('href'))
         })
 
+        //sprawdzanie platformy i wersji
+        
         let latestRelease = ""
         let latestReleaseLink = ""
 
