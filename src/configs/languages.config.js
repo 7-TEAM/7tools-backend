@@ -1,6 +1,7 @@
 const languages = {
-    1: {
+    0: {
         'name': 'ruby',
+        'imageUrl': '/static/images/ruby.png',
         'releasesUrl': 'https://www.ruby-lang.org/en/downloads/releases/',
         'downloadUrl': 'https://cache.ruby-lang.org/pub/ruby/',
         'versionRegex':  /\/pub\/ruby\/([\d.]+)/,
@@ -10,8 +11,9 @@ const languages = {
             'linux': '.tar.gz',
         },
     },
-    2: {
+    1: {
         'name': 'go',
+        'imageUrl': '/static/images/go.png',
         'releasesUrl': 'https://go.dev/dl/',
         'downloadUrl': '/dl/go',
         'versionRegex': /go(\d+\.\d+\.\d+)/,

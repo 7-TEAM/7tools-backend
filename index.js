@@ -4,6 +4,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const languagesRouter = require('./src/routes/languages.route')
 
+app.use('/static', express.static('public'))
 app.use('/api/languages', languagesRouter)
 
 app.get('/', (req, res) => {

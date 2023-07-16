@@ -3,19 +3,23 @@ const languagesConfig = require('../configs/languages.config')
 
 const languagesController = {
     get: async (req, res) => {
-        const platform = req.query.platform;
+        const platform = req.query.platform
         
-        let languagesReleases = [];
+        let languages = []
+
+        if(!platform) { return res.status(400).send('Missing required argument: platform') }
+        
+        if(!['windows', 'macos', 'linux'].includes(platform)) { return res.status(400).send('Invalid required argument: platform') }
 
         try {
             await Promise.all(Object.entries(languagesConfig).map(async ([key, nestedObj]) => {
-                let language = {};
+                let language = {}
 
                 Object.entries(nestedObj).forEach(([nestedKey, value]) => {
-                    language[nestedKey] = value;
+                    language[nestedKey] = value
                 });
 
-                const latestReleaseLink = await languageUtil.getLatestDownloadUrl(
+                const { latestRelease, latestReleaseLink } = await languageUtil.getLatestDownload(
                     language.name,
                     language.releasesUrl,
                     language.downloadUrl,
@@ -23,13 +27,20 @@ const languagesController = {
                     language.extensions,
                     platform
                 );
+                
+                languages[key] = {
+                    'id': key,
+                    'name': languagesConfig[key].name,
+                    'currentVersion': latestRelease,
+                    'imageUrl': `http://localhost:3000${languagesConfig[key].imageUrl}`,
+                    'downloadUrl': latestReleaseLink,
+                }
+            }))
 
-                languagesReleases.push(latestReleaseLink);
-            }));
-
-            res.send(languagesReleases);
+            res.send(languages)
         } catch (error) {
-            console.error(error);
+            console.error(error)
+            res.status(500).send('Internal Server Error')
         }
     }
 }
