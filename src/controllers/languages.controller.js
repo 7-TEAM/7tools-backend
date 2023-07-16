@@ -37,7 +37,7 @@ const languagesController = {
                 }
             }))
 
-            res.send(languages)
+            res.status(200).send(languages)
         } catch (error) {
             console.error(error)
             res.status(500).send('Internal Server Error')
