@@ -1,8 +1,10 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 
-function getDownloadUrls(url, selector) {
+function getDownloadUrls(name, url, selector, extensions, platform) {
   return new Promise((resolve, reject) => {
+    const validExtension = extensions[platform]
+
     let releases = []
 
     axios.get(url)
@@ -10,10 +12,13 @@ function getDownloadUrls(url, selector) {
         const $ = cheerio.load(response.data)
 
         $(`a[href^="${selector}"]`).each((index, element) => {
-          releases.push($(element).attr('href'))
+          let href = $(element).attr('href')
+          if (name === 'go') href = url + href.replace('/dl/', '');
+
+          if (href.endsWith(validExtension)) {
+            releases.push(href)
+          }
         })
-        
-        //sprawdzanie platformy i wersji
 
         resolve(releases)
       })
@@ -24,8 +29,10 @@ function getDownloadUrls(url, selector) {
   })
 }
 
-function getLatestDownloadUrl(url, selector, versionRegex) {
+function getLatestDownloadUrl(name, url, selector, versionRegex, extensions, platform) {
   return new Promise((resolve, reject) => {
+    const validExtension = extensions[platform]
+
     let releases = []
 
     axios.get(url)
@@ -33,10 +40,12 @@ function getLatestDownloadUrl(url, selector, versionRegex) {
         const $ = cheerio.load(response.data)
 
         $(`a[href^="${selector}"]`).each((index, element) => {
-          releases.push($(element).attr('href'))
-        })
+          let href = $(element).attr('href')
 
-        //sprawdzanie platformy i wersji
+          if (href.endsWith(validExtension)) {
+            releases.push(href)
+          }
+        })
         
         let latestRelease = ""
         let latestReleaseLink = ""
@@ -51,6 +60,8 @@ function getLatestDownloadUrl(url, selector, versionRegex) {
             }
           }
         }
+
+        if (name === 'go') latestReleaseLink = url + latestReleaseLink.replace('/dl/', '');
 
         resolve(latestReleaseLink)
       })
