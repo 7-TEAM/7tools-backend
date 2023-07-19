@@ -21,7 +21,7 @@ function getDownloads(name, url, selector, versionRegex, extensions, platform) {
     const validExtension = extensions[platform]
 
     let releases = []
-
+    
     axios.get(url)
       .then(response => {
         const $ = cheerio.load(response.data)

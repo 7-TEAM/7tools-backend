@@ -33,7 +33,10 @@ const languagesController = {
                     'name': languagesConfig[key].name,
                     'currentVersion': latestRelease,
                     'imageUrl': `http://localhost:3000${languagesConfig[key].imageUrl}`,
-                    'downloadUrl': latestReleaseLink,
+                    'currentVersion': {
+                        'iteration': latestRelease,
+                        'url': latestReleaseLink,
+                    },
                 }
             }))
 
